@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List of flights</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+    <h1>List of flights</h1>
+    <table>
+        <tr>
+            <th>Origin</th>
+            <th>Destination</th>
+            <th>Reference</th>
+            <th>Date</th>
+            <th>Company</th>
+            <th>Price</th>
+        </tr>
+        <% flights.forEach(function(flight) {%>
+        <tr>
+            <td><%=flight.origin%></td>
+            <td><%=flight.destination%></td>
+            <td><%=flight.reference%></td>
+            <td><%=flight.date%></td>
+            <td><%=flight.company%></td>
+            <td><%=flight.price%></td>
+        </tr>
+        <% }); %>
+    </table>
+</body>
+</html>

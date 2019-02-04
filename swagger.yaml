@@ -1,0 +1,288 @@
+swagger: "2.0"
+info:
+  description: "API template"
+  version: "0.0.0"
+  title: "API template"
+host: "localhost:3000"
+basePath: "/api/v1"
+produces:
+  - "application/json"
+securityDefinitions:
+  authorization:
+    type: apiKey
+    name: authorization
+    in: header
+paths:
+  /users:
+    get:
+      tags:
+        - users
+      summary: Send a list of users
+      parameters:
+        - name: country
+          type: string
+          in: query
+          description: Country of the users
+        - name: company
+          type: string
+          in: query
+          description: Company of the users
+      responses:
+        200:
+          description: List of filtered users according to the restrictions given via querystring
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/User"
+    post:
+      tags:
+        - users
+      summary: Return the new user
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        201:
+          description: Returns a new user
+          schema:
+            $ref: "#/definitions/User"
+  /users/{username}:
+    get:
+      tags:
+        - users
+      summary: Returns an unique user
+      parameters:
+        - name: username
+          type: string
+          in: path
+          description: The user username
+      response:
+        200:
+          description: Returns an unique user
+          schema:
+            $ref: "#/definitions/User"
+    put:
+      tags:
+        - users
+      summary: Update a given user
+      parameters:
+        - name: username
+          type: string
+          in: path
+          description: The user username
+        - name: body
+          in: body
+          type: object
+          parameters:
+            country: string
+            avatar: string
+      responses:
+        200:
+          description: Returns an unique user
+          schema:
+            $ref: "#/definitions/User"
+        400:
+          description: Missing data
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: The given username does not exists in database
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      tags:
+        - users
+      summary: Delete a given user
+      parameters:
+        - name: username
+          type: string
+          in: path
+          description: The user username
+      response:
+        204:
+          description: The user has been deleted
+  /flights:
+    get:
+      tags:
+        - flights
+      summary: Returns a list of flights
+      parameters:
+        - name: origin
+          type: string
+          in: query
+          description: Code of the airport where the flight take off
+        - name: destination
+          type: string
+          in: query
+          description: Code of the airport where the flight will land
+      responses:
+        200:
+          description: List of filtered flights according to the restrictions given via querystring
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Flight"
+    post:
+      tags:
+        - flights
+      summary: Creates a flights
+      security:
+        - authorization: []
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: "#/definitions/Flight"
+          description: Code of the airport where the flight take off
+      responses:
+        201:
+          description: Created flight
+          schema:
+            type: object
+            schema:
+              $ref: "#/definitions/Flight"
+  /flights/{reference}:
+    get:
+      tags:
+        - flights
+      parameters:
+        - in: path
+          name: reference
+          required: true
+          type: string
+      responses:
+        200:
+          description: The given flight
+          schema:
+            $ref: '#/definitions/Flight'
+    put:
+      tags:
+        - flights
+      parameters:
+        - in: path
+          name: reference
+          required: true
+          type: string
+        - name: body
+          in: body
+          type: object
+          properties:
+            origin:
+              type: string
+            destination:
+              type: string
+      response:
+        200:
+          description: The updated flight
+          schema:
+            $ref: '#/definitions/Flight'
+  /bookings:
+    post:
+      tags:
+        - bookings
+      parameters:
+        - in: body
+          name: body
+          type: object
+          properties:
+            flight_ref:
+              type: string
+            username:
+              type: string
+      responses:
+        201:
+          description: "The new booking"
+          schema:
+            $ref: '#/definitions/Booking'
+  /bookings/{reference}:
+    put:
+      tags:
+        - bookings
+      parameters:
+        - in: body
+          name: body
+          type: object
+          properties:
+            flight_ref:
+              type: string
+      responses:
+        200:
+          description: "The updated booking"
+          schema:
+            $ref: '#/definitions/Booking'
+definitions:
+  User:
+    type: object
+    properties:
+      username:
+        type: string
+      fullname:
+        type: string
+      country:
+        type: string
+      avatar:
+        type: string
+      company:
+        type: string
+      type:
+        type: string
+    example:
+      username: "@devonbl"
+      fullname: "Devon Lindsey"
+      country: "USA"
+      avatar: "https://pbs.twimg.com/profile_images/602288777319460866/QEZUObls_bigger.jpg"
+      company: "Apple"
+      type: "person"
+  Flight:
+    type: object
+    properties:
+      reference:
+        type: string
+        description: Identifier of the flight
+      origin:
+        type: string
+        description: Where the flight will take off
+      destination:
+        type: string
+        description: Where the flight will land
+      placesLeft:
+        type: number
+        description: Available seats on the plane
+      company:
+        type: string
+        description: Name of the company
+      price:
+        type: number
+      date:
+        type: string
+        format: date
+    example:
+      reference: 'AF-123'
+      origin: 'CDG'
+      destination: 'BOG'
+      date: '2018-03-06T10:32:31.175Z'
+      placesLeft: 30
+      price: 200
+      company: 'Air France'
+  Booking:
+    type: object
+    properties:
+      reference:
+        type: string
+      username:
+        type: string
+      flight_ref:
+        type: string
+    exemple:
+      reference: 'ABC-123'
+      username: 'jomaora'
+      flight_ref: 'AF_123'
+  Error:
+    type: object
+    properties:
+      message:
+        type: string
+    example:
+      message: Description error

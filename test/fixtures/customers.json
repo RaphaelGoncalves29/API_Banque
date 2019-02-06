@@ -1,0 +1,14 @@
+[
+    {
+      "firstname": "John",
+      "lastname": "Doe",
+      "city": "London",
+      "reference": "JD_123"
+    },
+    {
+      "firstname": "John",
+      "lastname": "Smith",
+      "city": "Paris",
+      "reference": "JS_456"
+    }
+  ]

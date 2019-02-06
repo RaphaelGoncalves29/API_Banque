@@ -205,127 +205,159 @@ paths:
           description: The beneficaire reference does not exists in database
           schema:
             $ref: "#/definitions/Error"
-  /flights:
+  /accounts:
     get:
       tags:
-        - flights
-      summary: Returns a list of flights
+        - accounts
+      summary: Returns a list of account
       parameters:
-        - name: origin
+        - name: type
           type: string
           in: query
-          description: Code of the airport where the flight take off
-        - name: destination
-          type: string
-          in: query
-          description: Code of the airport where the flight will land
+          description: Type of the account
       responses:
         200:
-          description: List of filtered flights according to the restrictions given via querystring
+          description: List of filtered account according to the restrictions given via querystring
           schema:
             type: array
             items:
-              $ref: "#/definitions/Flight"
+              $ref: "#/definitions/Account"
+        400:
+          description: The given type does not exists in database
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Error"
     post:
       tags:
-        - flights
-      summary: Creates a flights
+        - accounts
+      summary: Return the new account
       security:
         - authorization: []
       parameters:
         - name: body
           in: body
           schema:
-            $ref: "#/definitions/Flight"
-          description: Code of the airport where the flight take off
+            $ref: "#/definitions/Account"
       responses:
         201:
-          description: Created flight
+          description: Created account
           schema:
-            type: object
-            schema:
-              $ref: "#/definitions/Flight"
-  /flights/{reference}:
+            $ref: "#/definitions/Account"
+        400:
+          description: Missing data
+          schema:
+            $ref: "#/definitions/Error"
+  /accounts/{reference}:
     get:
       tags:
-        - flights
+        - accounts
+      summary: Returns all account of the reference
       parameters:
-        - in: path
-          name: reference
-          required: true
+        - name: reference
           type: string
+          required: true
+          in: path
+          description: The customer reference
       responses:
         200:
-          description: The given flight
+          description: Returns all account of the reference
           schema:
-            $ref: "#/definitions/Flight"
-    put:
+            $ref: "#/definitions/Customer"
+        404:
+          description: The given customer reference does not exists in database
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
       tags:
-        - flights
+        - accounts
+      summary: Delete all account of the given reference
       parameters:
-        - in: path
-          name: reference
-          required: true
+        - name: reference
           type: string
-        - name: body
-          in: body
-          type: object
-          properties:
-            origin:
-              type: string
-            destination:
-              type: string
+          in: path
+          description: The account reference
       response:
-        200:
-          description: The updated flight
+        204:
+          description: All accounts of the given reference has been deleted
+        404:
+          description: The given account reference does not exists in database
           schema:
-            $ref: "#/definitions/Flight"
-  /bookings:
-    post:
+            $ref: "#/definitions/Error"
+  /accounts/{number}:
+    get:
       tags:
-        - bookings
+        - accounts
+      summary: Returns a unique account
       parameters:
-        - in: body
-          name: body
-          type: object
-          properties:
-            flight_ref:
-              type: string
-            username:
-              type: string
+        - name: number
+          type: string
+          required: true
+          in: path
+          description: The account number
       responses:
-        201:
-          description: "The new booking"
+        200:
+          description: Returns a unique account
           schema:
-            $ref: "#/definitions/Booking"
-  /bookings/{reference}:
+            $ref: "#/definitions/Account"
+        404:
+          description: The given number does not exists in database
+          schema:
+            $ref: "#/definitions/Error"
     put:
       tags:
-        - bookings
+        - accounts
+      summary: Update a given account
       parameters:
-        - in: body
-          name: body
-          type: object
-          properties:
-            flight_ref:
-              type: string
+        - name: number
+          type: string
+          in: path
+          description: The account number
       responses:
         200:
-          description: "The updated booking"
+          description: Update a unique account
           schema:
-            $ref: "#/definitions/Booking"
+            $ref: "#/definitions/Customer"
+        400:
+          description: Missing data
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: The given number does not exists in database
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      tags:
+        - accounts
+      summary: Delete a given account
+      parameters:
+        - name: number
+          type: string
+          in: path
+          description: The account number
+      response:
+        204:
+          description: The account has been deleted
+        404:
+          description: The given account number does not exists in database
+          schema:
+            $ref: "#/definitions/Error"
 definitions:
   Customer:
     type: object
     properties:
       firstname:
         type: string
+        description: The customer's firstname
       lastname:
         type: string
+        description: The customer's lastname
       city:
         type: string
+        description: The customer's city
       reference:
         type: string
+        description: The customer's reference
     example:
       firstname: "John"
       lastname: "Smith"
@@ -336,12 +368,16 @@ definitions:
     properties:
       reference:
         type: string
+        description: The Operation's reference
       emetteur:
         type: string
+        description: The Operation's emetteur
       beneficiaire:
         type: string
+        description: The Operation's beneficiaire
       montant:
         type: number
+        description: The Operation's montant
       type:
         type: string
     example: 
@@ -350,50 +386,26 @@ definitions:
       beneficaire: "ACC_456"
       montant: 150
       type: "versement"
-  Flight:
+  Account:
     type: object
     properties:
       reference:
         type: string
-        description: Identifier of the flight
-      origin:
+        description: Customer's reference of the account
+      number:
         type: string
-        description: Where the flight will take off
-      destination:
+        description: Account's number
+      type:
         type: string
-        description: Where the flight will land
-      placesLeft:
+        description: Account's type
+      amount:
         type: number
-        description: Available seats on the plane
-      company:
-        type: string
-        description: Name of the company
-      price:
-        type: number
-      date:
-        type: string
-        format: date
+        description: Account's amount available
     example:
-      reference: "AF-123"
-      origin: "CDG"
-      destination: "BOG"
-      date: "2018-03-06T10:32:31.175Z"
-      placesLeft: 30
-      price: 200
-      company: "Air France"
-  Booking:
-    type: object
-    properties:
-      reference:
-        type: string
-      username:
-        type: string
-      flight_ref:
-        type: string
-    exemple:
-      reference: "ABC-123"
-      username: "jomaora"
-      flight_ref: "AF_123"
+      reference: "JS_123456"
+      number: "ACC_0123"
+      type: "Livret A"
+      amount: 4500
   Error:
     type: object
     properties:

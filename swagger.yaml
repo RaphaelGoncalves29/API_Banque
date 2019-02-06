@@ -126,6 +126,85 @@ paths:
           description: The given customer reference does not exists in database
           schema:
             $ref: "#/definitions/Error"
+  /operations:
+    get:
+      tags:
+        - operations
+      summary: Returns a list of operations
+      parameters:
+        - name: origin
+          type: string
+          in: query
+          description: Type of operations
+      responses:
+        200:
+          description: List of filtered operations according to the restrictions given via querystring
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Operation"
+        400:
+          description: Missing data
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      tags:
+        - operations
+      summary: Return the new operation
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: "#/definitions/Operation"
+      responses:
+        201:
+          description: Returns a new operation
+          schema:
+            $ref: "#/definitions/Operation"
+        400:
+          description: Missing data
+          schema:
+            $ref: "#/definitions/Error"
+  /operations/{emetteur}:
+    get:
+      tags:
+        - operations
+      summary: Returns an unique operation
+      parameters:
+        - name: emetteur
+          type: string
+          required: true
+          in: path
+          description: The emetteur reference
+      responses:
+        200:
+          description: Returns an unique operation
+          schema:
+            $ref: "#/definitions/Operation"
+        404:
+          description: The emetteur reference does not exists in database
+          schema:
+            $ref: "#/definitions/Error"
+  /operations/{beneficaire}:
+    get:
+      tags:
+        - operations
+      summary: Returns an unique operation
+      parameters:
+        - name: beneficaire
+          type: string
+          required: true
+          in: path
+          description: The beneficaire reference
+      responses:
+        200:
+          description: Returns an unique operation
+          schema:
+            $ref: "#/definitions/Operation"
+        404:
+          description: The beneficaire reference does not exists in database
+          schema:
+            $ref: "#/definitions/Error"
   /flights:
     get:
       tags:
@@ -252,6 +331,25 @@ definitions:
       lastname: "Smith"
       city: "London"
       reference: "JS_123456"
+  Operation:
+    type: object
+    properties:
+      reference:
+        type: string
+      emetteur:
+        type: string
+      beneficiaire:
+        type: string
+      montant:
+        type: number
+      type:
+        type: string
+    example: 
+      reference: "R_111"
+      emetteur: "ACC_0123"
+      beneficaire: "ACC_456"
+      montant: 150
+      type: "versement"
   Flight:
     type: object
     properties:

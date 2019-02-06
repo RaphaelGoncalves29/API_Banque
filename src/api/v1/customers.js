@@ -33,13 +33,13 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res) => {
     try {
-        // Vérifier que il y a un username, fullname, country
+        // Vérifier que il y a un firstname, lastname, city, reference
         const body = req.body;
-        if (body.username && body.fullname && body.country) {
+        if (body.firstname && body.lastname && body.city && body.reference) {
             // Insert dans la bdd
-            const { Users } = req.db;
-            const user = await Users.create(body);
-            return res.status(201).send(user);
+            const { Customers } = req.db;
+            const customer = await Customers.create(body);
+            return res.status(201).send(customer);
         }
         else {
             return res.status(400).send({ message: 'Missing data' });

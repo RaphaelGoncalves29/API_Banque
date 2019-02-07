@@ -4,16 +4,43 @@ const {expect} = require('chai');
 const request = require('supertest');
 const createServer = require('../../app');
 const database = require('../../src/database');
-const fixtures = require('../fixtures/users');
+const fixtures = require('../fixtures/customers');
 
 const server = request(createServer());
 
 describe.only('User api', function() {
     before(async function() {
-        await database.sequelize.query('DELETE from USERS');
-        const {Users} = database;
-        await Users.create(fixtures);
+        await database.sequelize.query('DELETE from CUSTOMERS');
+        const {Customers} = database;
+        await Customers.create(fixtures);
     });
+
+	describe('GET /api/v1/customers', function() {
+		it('Recover all customers', async () => {
+			const {body: customers} = await server
+				.get('/api/v1/customers')
+				.set('Accept', 'application/json')
+				.expect(200);
+			expect(customers).to.be.an('array');
+			expect(customers.length).to.equal(3);
+		});
+
+		it('Filtering flights', async () => {
+			const {body: flights} = await server
+				.get('/api/v1/flights')
+				.query({
+					company: 'Lufthansa',
+					origin: 'CDG',
+					destination: 'BOG'
+				})
+				.set('Accept', 'application/json')
+				.expect(200);
+
+			expect(flights).to.be.an('array');
+			expect(flights.length).to.equal(1);
+			expect(flights[0].reference).to.equal('LH-123')
+		});
+	});
 
 	describe('POST /api/v1/users', function () {
 		it("La requete envoie tous les données d'un user, l'user est crée et on reçoit un 200", async () => {

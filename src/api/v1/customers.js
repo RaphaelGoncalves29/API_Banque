@@ -30,18 +30,25 @@ router.get('/', async (req, res) => {
 	res.send(customers);
 });
 
-router.post('/', async (req, res, next) => {
-	try {
-		const {body: givenCustomer} = req;
-		const {Customers} = req.db;
-		const customer = await Customers.create(givenCustomer);
-		res.status(201).send(customer);
-	} catch(err) {
-		if (err.name === 'SequelizeValidationError') {
-			return next(new BadRequest(err));
-		}
-		next(err);
-	}
+router.post('/', async (req, res) => {
+    try {
+        // Vérifier que il y a un firstname, lastname, city, reference
+        const body = req.body;
+        if (body.reference && body.firstname && body.lastname && body.city) {
+            // Insert dans la bdd
+            const { Customers } = req.db;
+            const customer = await Customers.create(body);
+            return res.status(201).send(customer);
+        }
+        else {
+            return res.status(400).send({ message: 'Missing data' });
+        }
+    } catch (err) {
+        if (err.name === 'SequelizeUniqueConstraintError') {
+            return res.status(409).send({ message: 'Customer exists déjà' })
+        }
+    }
+
 });
 
 module.exports = router;

@@ -1,0 +1,14 @@
+[
+    {
+      "reference": "John",
+      "number": "Doe",
+      "type": "London",
+      "amount": 1200
+    },
+    {
+      "reference": "Joh2n",
+      "number": "Smith",
+      "type": "Paris",
+      "amount": 1200
+    }
+  ]

@@ -232,8 +232,6 @@ paths:
       tags:
         - accounts
       summary: Return the new account
-      security:
-        - authorization: []
       parameters:
         - name: body
           in: body

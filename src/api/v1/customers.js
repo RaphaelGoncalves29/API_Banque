@@ -46,21 +46,21 @@ router.post('/', async (req, res) => {
         }
     } catch (err) {
         if (err.name === 'SequelizeUniqueConstraintError') {
-            return res.status(409).send({ message: 'User exists déjà' })
+            return res.status(409).send({ message: 'Customer exists déjà' })
         }
     }
 
 });
 
-router.get('/:username', async (req, res) => {
-    const username = req.params.username;
-    const { Users } = req.db;
-    const user = await Users.findOne({ where: { username: username } });
-    if (user) {
-        return res.status(200).send(user);
+router.get('/:reference', async (req, res) => {
+    const reference = req.params.reference;
+    const { Customers } = req.db;
+    const customer = await Customers.findOne({ where: { reference: reference } });
+    if (customer) {
+        return res.status(200).send(customer);
     } else {
         return res.status(404)
-            .send({ message: `Username ${username} not found` });
+            .send({ message: `Reference ${reference} not found` });
     }
 })
 module.exports = router;

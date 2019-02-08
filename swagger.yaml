@@ -132,7 +132,7 @@ paths:
         - operations
       summary: Returns a list of operations
       parameters:
-        - name: origin
+        - name: type
           type: string
           in: query
           description: Type of operations

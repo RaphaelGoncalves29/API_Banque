@@ -20,8 +20,8 @@ router.get('/', async (req, res) => {
 	const filter = {
 		where: {}
 	};
-	if (firstname) filter.where.lastname = firstname;
-	if (lastname) filter.where.firstname = lastname;
+	if (firstname) filter.where.firstname = firstname;
+	if (lastname) filter.where.lastname = lastname;
 	if (city) filter.where.city = city;
 
 	const {Customers} = req.db;

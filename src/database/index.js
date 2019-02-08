@@ -35,12 +35,14 @@ const Flights = sequelize.import(path.join(__dirname, 'flights'));
 const Users = sequelize.import(path.join(__dirname, 'users'));
 const Accounts = sequelize.import(path.join(__dirname, 'accounts'));
 const Customers = sequelize.import(path.join(__dirname, 'customers'));
+const Operations = sequelize.import(path.join(__dirname, 'operations'));
 
 // TODO: And export them
 exports.Flights = Flights;
 exports.Users = Users;
 exports.Accounts = Accounts;
 exports.Customers = Customers;
+exports.Operations = Operations;
 
 // Exporting sequelize object to allow raw queries if needed
 exports.sequelize = sequelize;

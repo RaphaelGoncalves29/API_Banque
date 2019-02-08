@@ -378,6 +378,7 @@ definitions:
         description: The Operation's montant
       type:
         type: string
+        description: The Operation's type
     example: 
       reference: "R_111"
       emetteur: "ACC_0123"

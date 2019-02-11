@@ -51,6 +51,23 @@ router.post('/', async (req, res) => {
 
 });
 
+router.put('/:reference', async (req, res) => {
+    const reference = req.params.reference;
+    const body = req.body;
+    const {Customers} = req.db;
+    const customer = await Customers.findOne({ where: {reference: reference} });
+	
+    if (customer) {
+        customer.update(body);
+        return res.send({
+            reference: reference
+        });
+    } else {
+        return res.status(404)
+            .send({message: `Customers ${reference} not found`});
+    }
+ });
+
 
 
  router.delete('/:reference', async (req, res) => {
@@ -73,3 +90,6 @@ router.post('/', async (req, res) => {
 	}
   });
 module.exports = router;
+
+
+

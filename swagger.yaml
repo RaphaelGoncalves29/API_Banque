@@ -85,18 +85,14 @@ paths:
         - customers
       summary: Update a given customer
       parameters:
-        - name: firstname
+        - name: body
+          in: body
+          schema:
+            $ref: "#/definitions/Customer"
+        - name: reference
           type: string
           in: path
-          description: The customer firstname
-        - name: lastname
-          type: string
-          in: path
-          description: The customer lastname
-        - name: city
-          type: string
-          in: path
-          description: The customer city
+          description: The customer reference
       responses:
         200:
           description: Returns an unique customer

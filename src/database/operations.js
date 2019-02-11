@@ -5,26 +5,26 @@ const Operations = (sequelize, DataTypes) => {
 		reference: {
 			type: DataTypes.STRING,
 			primaryKey: true,
-			validate: {notEmpty: {msg: '-> Missing firstname'}}
+			validate: {notEmpty: {msg: '-> Missing reference'}}
 		},
 		emetteur: {
 			type: DataTypes.STRING,
-			validate: {notEmpty: {msg: '-> Missing lastname'}},
+			validate: {notEmpty: {msg: '-> Missing emetteur'}},
 			allowNull: false
 		},
 		beneficiaire: {
 			type: DataTypes.STRING,
-			validate: {notEmpty: {msg: '-> Missing city'}},
+			validate: {notEmpty: {msg: '-> Missing beneficiaire'}},
 			allowNull: false
         },
         montant: {
 			type: DataTypes.INTEGER,
-			validate: {notEmpty: {msg: '-> Missing reference'}},
+			validate: {notEmpty: {msg: '-> Missing montant'}},
 			allowNull: false
         },
         type: {
 			type: DataTypes.STRING,
-			validate: {notEmpty: {msg: '-> Missing city'}},
+			validate: {notEmpty: {msg: '-> Missing type'}},
 			allowNull: false
         }
 	});

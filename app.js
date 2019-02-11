@@ -15,6 +15,7 @@ const usersRouter = require('./src/api/v1/users');
 const flightsRouter = require('./src/api/v1/flights');
 const customersRouter = require('./src/api/v1/customers');
 const accountsRouter = require('./src/api/v1/accounts');
+const operationsRouter = require('./src/api/v1/operations');
 
 const createServer = () => {
 	const app = express();
@@ -55,6 +56,7 @@ const createServer = () => {
 	app.use('/api/v1/customers', customersRouter);
 	app.use('/api/v1/flights', flightsRouter);
 	app.use('/api/v1/accounts', accountsRouter);
+	app.use('/api/v1/operations', operationsRouter);
 
 // catch 404 and forward to error handler
 	app.use(function(req, res, next) {

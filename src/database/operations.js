@@ -4,8 +4,8 @@ const Operations = (sequelize, DataTypes) => {
 	return sequelize.define('Operations', {
 		reference: {
 			type: DataTypes.STRING,
-			primaryKey: true,
-			validate: {notEmpty: {msg: '-> Missing reference'}}
+            validate: {notEmpty: {msg: '-> Missing reference'}},
+            primaryKey: true
 		},
 		emetteur: {
 			type: DataTypes.STRING,

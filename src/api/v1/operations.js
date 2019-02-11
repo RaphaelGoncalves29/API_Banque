@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
         }
     } catch (err) {
         if (err.name === 'SequelizeUniqueConstraintError') {
-            return res.status(409).send({ message: 'Customer exists déjà' })
+            return res.status(409).send({ message: 'Operation exists déjà' })
         }
     }
 

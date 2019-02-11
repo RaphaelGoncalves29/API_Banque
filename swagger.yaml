@@ -300,6 +300,10 @@ paths:
         - accounts
       summary: Update a given account
       parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: "#/definitions/Account"
         - name: number
           type: string
           in: path

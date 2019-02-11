@@ -80,6 +80,24 @@ router.get('/:reference/:number', async (req, res) => {
     }
 })
 
+router.put('/:number', async (req, res) => {
+    const number = req.params.number;
+    const body = req.body;
+    const {Accounts} = req.db;
+    const account = await Accounts.findOne({ where: {number: number} });
+
+    if (account) {
+        account.update(body);
+        return res.send({
+            number: number
+        });
+    } else {
+        return res.status(404)
+            .send({message: `Bookings ${number} not found`});
+    }
+ });
+
+
 router.delete('/:number', async (req, res) => {
     const number = req.params.number;
     const { Accounts } = req.db;

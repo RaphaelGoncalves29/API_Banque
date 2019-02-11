@@ -1,13 +1,13 @@
 [
     {
-      "reference": "John",
-      "number": "Doe",
+      "number": "ACC_1",
+      "reference": "JS_1234562",
       "type": "London",
       "amount": 1200
     },
     {
-      "reference": "Joh2n",
-      "number": "Smith",
+      "number": "ACC_2",
+      "reference": "JS_1234562",
       "type": "Paris",
       "amount": 1200
     }

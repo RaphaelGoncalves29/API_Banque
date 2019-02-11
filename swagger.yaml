@@ -387,12 +387,12 @@ definitions:
   Account:
     type: object
     properties:
-      reference:
-        type: string
-        description: Customer's reference of the account
       number:
         type: string
         description: Account's number
+      reference:
+        type: string
+        description: Customer's reference of the account
       type:
         type: string
         description: Account's type
@@ -400,8 +400,8 @@ definitions:
         type: number
         description: Account's amount available
     example:
-      reference: "JS_123456"
       number: "ACC_0123"
+      reference: "JS_123456"
       type: "Livret A"
       amount: 4500
   Error:

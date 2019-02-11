@@ -2,14 +2,14 @@
 
 const Accounts = (sequelize, DataTypes) => {
 	return sequelize.define('Accounts', {
-		reference: {
-			type: DataTypes.STRING,
-			primaryKey: true,
-			validate: {notEmpty: {msg: '-> Missing reference'}}
-		},
 		number: {
 			type: DataTypes.STRING,
+			primaryKey: true,
 			validate: {notEmpty: {msg: '-> Missing number'}},
+		},
+		reference: {
+			type: DataTypes.STRING,
+			validate: {notEmpty: {msg: '-> Missing reference'}},
 			allowNull: false
 		},
 		type: {

@@ -375,7 +375,7 @@ definitions:
     example: 
       reference: "R_111"
       emetteur: "ACC_0123"
-      beneficaire: "ACC_456"
+      beneficiaire: "ACC_456"
       montant: 150
       type: "versement"
   Account:

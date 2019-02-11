@@ -2,10 +2,16 @@
 
 const Customers = (sequelize, DataTypes) => {
 	return sequelize.define('Customers', {
+		reference: {
+			type: DataTypes.STRING,
+			validate: {notEmpty: {msg: '-> Missing reference'}},
+			primaryKey: true
+		},
 		firstname: {
 			type: DataTypes.STRING,
-			primaryKey: true,
-			validate: {notEmpty: {msg: '-> Missing firstname'}}
+			validate: {notEmpty: {msg: '-> Missing firstname'}},
+			allowNull: false
+
 		},
 		lastname: {
 			type: DataTypes.STRING,
@@ -16,12 +22,7 @@ const Customers = (sequelize, DataTypes) => {
 			type: DataTypes.STRING,
 			validate: {notEmpty: {msg: '-> Missing city'}},
 			allowNull: false
-        },
-        reference: {
-			type: DataTypes.STRING,
-			validate: {notEmpty: {msg: '-> Missing reference'}},
-			allowNull: false
-		}
+        }
 	});
 };
 

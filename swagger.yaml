@@ -246,7 +246,11 @@ paths:
           description: Missing data
           schema:
             $ref: "#/definitions/Error"
-  /accounts/{reference}:
+        409:
+          description: Account already exists 
+          schema:
+            $ref: "#/definitions/Error"
+  /accounts/{reference}/{number}:
     get:
       tags:
         - accounts
@@ -254,54 +258,43 @@ paths:
       parameters:
         - name: reference
           type: string
-          required: true
+          required: false
           in: path
           description: The customer reference
+        - name: number
+          type: string
+          required: false
+          in: path
+          description: The customer number
       responses:
         200:
           description: Returns all account of the reference
           schema:
-            $ref: "#/definitions/Customer"
+            $ref: "#/definitions/Account"
         404:
           description: The given customer reference does not exists in database
           schema:
             $ref: "#/definitions/Error"
-    delete:
-      tags:
-        - accounts
-      summary: Delete all account of the given reference
-      parameters:
-        - name: reference
-          type: string
-          in: path
-          description: The account reference
-      response:
-        204:
-          description: All accounts of the given reference has been deleted
-        404:
-          description: The given account reference does not exists in database
-          schema:
-            $ref: "#/definitions/Error"
   /accounts/{number}:
-    get:
-      tags:
-        - accounts
-      summary: Returns a unique account
-      parameters:
-        - name: number
-          type: string
-          required: true
-          in: path
-          description: The account number
-      responses:
-        200:
-          description: Returns a unique account
-          schema:
-            $ref: "#/definitions/Account"
-        404:
-          description: The given number does not exists in database
-          schema:
-            $ref: "#/definitions/Error"
+    # get:
+    #   tags:
+    #     - accounts
+    #   summary: Returns a unique account
+    #   parameters:
+    #     - name: number
+    #       type: string
+    #       required: true
+    #       in: path
+    #       description: The account number
+    #   responses:
+    #     200:
+    #       description: Returns a unique account
+    #       schema:
+    #         $ref: "#/definitions/Account"
+    #     404:
+    #       description: The given number does not exists in database
+    #       schema:
+    #         $ref: "#/definitions/Error"
     put:
       tags:
         - accounts
@@ -333,7 +326,7 @@ paths:
           type: string
           in: path
           description: The account number
-      response:
+      responses:
         204:
           description: The account has been deleted
         404:

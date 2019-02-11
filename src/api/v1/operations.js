@@ -22,13 +22,13 @@ router.post('/', async (req, res) => {
     try {
         // Vérifier que il y a un firstname, lastname, city, reference
         const body = req.body;
+        console.log(body.beneficaire);
         if (body.reference && body.emetteur && body.beneficiaire && body.montant && body.type) {
             // Insert dans la bdd
             const { Operations } = req.db;
             const operation = await Operations.create(body);
             return res.status(201).send(operation);
-        }
-        else {
+        } else {
             return res.status(400).send({ message: 'Missing data' });
         }
     } catch (err) {

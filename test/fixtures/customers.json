@@ -10,5 +10,11 @@
       "lastname": "Smith",
       "city": "Paris",
       "reference": "JS_456"
+    },
+    {
+      "firstname": "Toto",
+      "lastname": "Tata",
+      "city": "Coco",
+      "reference": "TT_123"
     }
   ]

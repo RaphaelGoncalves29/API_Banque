@@ -85,18 +85,14 @@ paths:
         - customers
       summary: Update a given customer
       parameters:
-        - name: firstname
+        - name: body
+          in: body
+          schema:
+            $ref: "#/definitions/Customer"
+        - name: reference
           type: string
           in: path
-          description: The customer firstname
-        - name: lastname
-          type: string
-          in: path
-          description: The customer lastname
-        - name: city
-          type: string
-          in: path
-          description: The customer city
+          description: The customer reference
       responses:
         200:
           description: Returns an unique customer
@@ -119,7 +115,7 @@ paths:
           type: string
           in: path
           description: The customer reference
-      response:
+      responses:
         204:
           description: The customer has been deleted
         404:
@@ -358,7 +354,7 @@ definitions:
     example: 
       reference: "R_111"
       emetteur: "ACC_0123"
-      beneficaire: "ACC_456"
+      beneficiaire: "ACC_456"
       montant: 150
       type: "versement"
   Account:

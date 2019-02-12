@@ -248,11 +248,11 @@ paths:
     get:
       tags:
         - accounts
-      summary: Returns account of the number
+      summary: Returns a given account
       parameters:
         - name: number
           type: string
-          required: false
+          required: true
           in: path
           description: The customer number
       responses:
@@ -323,10 +323,10 @@ definitions:
         type: string
         description: The customer's reference
     example:
+      reference: "JS_1234"
       firstname: "John"
       lastname: "Smith"
       city: "London"
-      reference: "JS_123456"
   Operation:
     type: object
     properties:
@@ -346,9 +346,9 @@ definitions:
         type: string
         description: The Operation's type
     example: 
-      reference: "R_111"
-      emetteur: "ACC_0123"
-      beneficiaire: "ACC_456"
+      reference: "R_100"
+      emetteur: "ACC_1"
+      beneficiaire: "ACC_2"
       montant: 150
       type: "versement"
   Account:
@@ -367,8 +367,8 @@ definitions:
         type: number
         description: Account's amount available
     example:
-      number: "ACC_0123"
-      reference: "JS_123456"
+      number: "ACC_1"
+      reference: "JS_1234"
       type: "Livret A"
       amount: 4500
   Error:

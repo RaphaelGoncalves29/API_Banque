@@ -8,7 +8,7 @@ const fixtures = require('../fixtures/customers');
 
 const server = request(createServer());
 
-describe.only('User api', function() {
+describe('User api', function() {
     before(async function() {
         await database.sequelize.query('DELETE from CUSTOMERS');
         const {Customers} = database;

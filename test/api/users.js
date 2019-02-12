@@ -8,7 +8,7 @@ const fixtures = require('../fixtures/users');
 
 const server = request(createServer());
 
-describe.only('User api', function() {
+describe('User api', function() {
     before(async function() {
         await database.sequelize.query('DELETE from USERS');
         const {Users} = database;
@@ -45,7 +45,7 @@ describe.only('User api', function() {
 		});
     });
     
-    describe.only('GET /api/v1/users/:username', function() {
+    describe('GET /api/v1/users/:username', function() {
         it("La reference donnée n'existe pas alors j'ai un 404", async () => {
             await server.get('/api/v1/users/blabla')
                 .expect(404);

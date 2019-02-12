@@ -2,12 +2,18 @@
     {
       "number": "ACC_1",
       "reference": "JS_1234562",
-      "type": "London",
+      "type": "Livret AB",
       "amount": 1200
     },
     {
       "number": "ACC_2",
-      "reference": "JS_1234562",
+      "reference": "JS_12",
+      "type": "Livret AB",
+      "amount": 1200
+    },
+    {
+      "number": "ACC_3",
+      "reference": "JS_123",
       "type": "Paris",
       "amount": 1200
     }

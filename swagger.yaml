@@ -215,6 +215,10 @@ paths:
           type: string
           in: query
           description: Type of the account
+        - name: reference
+          type: string
+          in: query
+          description: reference of the account
       responses:
         200:
           description: List of filtered account according to the restrictions given via querystring
@@ -250,17 +254,12 @@ paths:
           description: Account already exists 
           schema:
             $ref: "#/definitions/Error"
-  /accounts/{reference}/{number}:
+  /accounts/{number}:
     get:
       tags:
         - accounts
       summary: Returns all account of the reference
       parameters:
-        - name: reference
-          type: string
-          required: false
-          in: path
-          description: The customer reference
         - name: number
           type: string
           required: false
@@ -275,26 +274,6 @@ paths:
           description: The given customer reference does not exists in database
           schema:
             $ref: "#/definitions/Error"
-  /accounts/{number}:
-    # get:
-    #   tags:
-    #     - accounts
-    #   summary: Returns a unique account
-    #   parameters:
-    #     - name: number
-    #       type: string
-    #       required: true
-    #       in: path
-    #       description: The account number
-    #   responses:
-    #     200:
-    #       description: Returns a unique account
-    #       schema:
-    #         $ref: "#/definitions/Account"
-    #     404:
-    #       description: The given number does not exists in database
-    #       schema:
-    #         $ref: "#/definitions/Error"
     put:
       tags:
         - accounts

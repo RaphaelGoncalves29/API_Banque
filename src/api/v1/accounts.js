@@ -4,14 +4,14 @@ const router = express.Router();
 
 
 router.get('/', async (req, res) => {
-    const {type} = req.query;
+	const {type, reference} = req.query;
 	const filter = {
-        where: {}
+		where: {}
 	};
 	if (type) filter.where.type = type;
-    
+	if (reference) filter.where.reference = reference;
+
 	const {Accounts} = req.db;
-    console.log(Accounts+"test");
 	const accounts = await Accounts.findAll(filter);
 
 	res.send(accounts);
@@ -33,7 +33,6 @@ router.post('/', async (req, res) => {
             return res.status(409).send({ message: 'Le compte existe déjà' })
         }
     }
-
 });
 
 // router.get('/:reference', async (req, res) => {
@@ -60,24 +59,16 @@ router.post('/', async (req, res) => {
 //     }
 // })
 
-router.get('/:reference/:number', async (req, res) => {
-    const {reference} = req.query;
-    const {number} = req.query;
-    const filter = {
-        where: {}
-	};
-
-	if (reference) filter.where.reference = reference;
-	if (number) filter.where.number = number;
-
-    const { Accounts } = req.db;
-    const account = await Accounts.findAll(filter);
-    if (account) {
-        return res.status(200).send(account);
-    } else {
-        return res.status(404)
-            .send({ message: `Reference ${number} not found` });
-    }
+router.get('/:number', async (req, res) => {
+	const number = req.params.number;
+	const {Accounts} = req.db;
+	const account = await Accounts.findOne({ where: {number: number} });
+	if (account) {
+		return res.status(200).send(account);
+	} else {
+		return res.status(404)
+			.send({message: `Number ${number} not found`});
+	}
 })
 
 router.put('/:number', async (req, res) => {

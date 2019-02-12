@@ -222,12 +222,6 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Account"
-        400:
-          description: The given type does not exists in database
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/Error"
     post:
       tags:
         - accounts
@@ -254,7 +248,7 @@ paths:
     get:
       tags:
         - accounts
-      summary: Returns all account of the reference
+      summary: Returns account of the number
       parameters:
         - name: number
           type: string
@@ -263,11 +257,11 @@ paths:
           description: The customer number
       responses:
         200:
-          description: Returns all account of the reference
+          description: Returns all account of the number
           schema:
             $ref: "#/definitions/Account"
         404:
-          description: The given customer reference does not exists in database
+          description: The given customer number does not exists in database
           schema:
             $ref: "#/definitions/Error"
     put:
@@ -288,10 +282,10 @@ paths:
           description: Update a unique account
           schema:
             $ref: "#/definitions/Customer"
-        400:
-          description: Missing data
-          schema:
-            $ref: "#/definitions/Error"
+        # 400:
+        #   description: Missing data
+        #   schema:
+        #     $ref: "#/definitions/Error"
         404:
           description: The given number does not exists in database
           schema:

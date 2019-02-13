@@ -10,8 +10,8 @@ const Customers = (sequelize, DataTypes) => {
 		firstname: {
 			type: DataTypes.STRING,
 			validate: {notEmpty: {msg: '-> Missing firstname'}},
-			allowNull: false
-
+			allowNull: false,
+			unique: false
 		},
 		lastname: {
 			type: DataTypes.STRING,

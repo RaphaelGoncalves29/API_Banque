@@ -55,6 +55,16 @@ describe.only('Account api', function() {
 			expect(accounts.length).to.equal(1);
 			expect(accounts[0].reference).to.equal('JS_1234562');
 		});
+
+		it("Type given doesn't exists, then error 404", async () => {
+			await server
+				.get('/api/v1/accounts')
+				.query({
+					type: 'Compte épargne',
+				})
+				.set('Accept', 'application/json')
+				.expect(404);
+		});
 	});
 
 	describe('POST /api/v1/accounts', function() {
@@ -134,13 +144,14 @@ describe.only('Account api', function() {
 
 			expect(account.number).to.equal('ACC_1');
 		});
-		// it('Should return an 400 error if given body has not all the mandatory data', async () => {
-		// 	await server.put('/api/v1/accounts/')
-		// 		.set('Accept', 'application/json')
-		// 		.expect(400);
-
-		// 		expect(account.number).to.equal('');
-		// 	});
+		it('Should return an 400 error if user try to update the reference', async () => {
+			await server.put('/api/v1/accounts/ACC_1')
+				.set('Accept', 'application/json')
+				.send({
+					reference: 'MS_125'
+				})
+				.expect(400);
+		});
 	});
 
 	describe('DELETE /api/v1/accounts', function() {

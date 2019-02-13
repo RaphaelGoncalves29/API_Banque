@@ -14,7 +14,11 @@ router.get('/', async (req, res) => {
 	const {Accounts} = req.db;
 	const accounts = await Accounts.findAll(filter);
 
-	res.send(accounts);
+	if (accounts.length > 0){
+		res.send(accounts);
+	} else {
+		return res.status(404).send({ message: `${reference} not found` });
+	}
 });
 
 router.post('/', async (req, res) => {
@@ -35,30 +39,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-// router.get('/:reference', async (req, res) => {
-//     const reference = req.params.reference;
-//     const { Accounts } = req.db;
-//     const account = await Accounts.findAll({ where: { reference: reference } });
-//     if (account) {
-//         return res.status(200).send(account);
-//     } else {
-//         return res.status(404)
-//             .send({ message: `Reference ${reference} not found` });
-//     }
-// })
-
-// router.get('/:number', async (req, res) => {
-//     const number = req.params.number;
-//     const { Accounts } = req.db;
-//     const account = await Accounts.findOne({ where: { number: number } });
-//     if (account) {
-//         return res.status(200).send(account);
-//     } else {
-//         return res.status(404)
-//             .send({ message: `Reference ${number} not found` });
-//     }
-// })
-
 router.get('/:number', async (req, res) => {
 	const number = req.params.number;
 	const {Accounts} = req.db;
@@ -76,7 +56,10 @@ router.put('/:number', async (req, res) => {
     const body = req.body;
     const {Accounts} = req.db;
     const account = await Accounts.findOne({ where: {number: number} });
-
+    if (body.reference) {
+        return res.status(400)
+            .send({message: `Reference can not be updated`});
+    }
     if (account) {
         account.update(body);
         return res.send({
@@ -84,10 +67,9 @@ router.put('/:number', async (req, res) => {
         });
     } else {
         return res.status(404)
-            .send({message: `Bookings ${number} not found`});
+            .send({message: `Number ${number} not found`});
     }
  });
-
 
 router.delete('/:number', async (req, res) => {
     const number = req.params.number;

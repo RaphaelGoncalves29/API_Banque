@@ -38,8 +38,8 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Customer"
-        400:
-          description: Missing data
+        404:
+          description:  Not found
           schema:
             $ref: "#/definitions/Error"
     post:
@@ -58,6 +58,10 @@ paths:
             $ref: "#/definitions/Customer"
         400:
           description: Missing data
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: Customer already exists
           schema:
             $ref: "#/definitions/Error"
   /customers/{reference}:
@@ -132,6 +136,14 @@ paths:
           type: string
           in: query
           description: Type of operations
+        - name: emetteur
+          type: string
+          in: query
+          description: emetteur of operations
+        - name: beneficiaire
+          type: string
+          in: query
+          description: beneficiaire of operations  
       responses:
         200:
           description: List of filtered operations according to the restrictions given via querystring
@@ -139,8 +151,8 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Operation"
-        400:
-          description: Missing data
+        404:
+          description:  Not found
           schema:
             $ref: "#/definitions/Error"
     post:
@@ -161,44 +173,28 @@ paths:
           description: Missing data
           schema:
             $ref: "#/definitions/Error"
-  /operations/{emetteur}:
-    get:
-      tags:
-        - operations
-      summary: Returns an unique operation
-      parameters:
-        - name: emetteur
-          type: string
-          required: true
-          in: path
-          description: The emetteur reference
-      responses:
-        200:
-          description: Returns an unique operation
-          schema:
-            $ref: "#/definitions/Operation"
-        404:
-          description: The emetteur reference does not exists in database
+        409:
+          description: Operation already exists
           schema:
             $ref: "#/definitions/Error"
-  /operations/{beneficaire}:
+  /operations/{reference}:
     get:
       tags:
         - operations
       summary: Returns an unique operation
       parameters:
-        - name: beneficaire
+        - name: reference
           type: string
           required: true
           in: path
-          description: The beneficaire reference
+          description: The operation reference
       responses:
         200:
           description: Returns an unique operation
           schema:
             $ref: "#/definitions/Operation"
         404:
-          description: The beneficaire reference does not exists in database
+          description: The operation reference does not exists in database
           schema:
             $ref: "#/definitions/Error"
   /accounts:
@@ -222,12 +218,10 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Account"
-        400:
-          description: The given type does not exists in database
+        404:
+          description:  Not found
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/Error"
+            $ref: "#/definitions/Error"
     post:
       tags:
         - accounts
@@ -254,20 +248,20 @@ paths:
     get:
       tags:
         - accounts
-      summary: Returns all account of the reference
+      summary: Returns a given account
       parameters:
         - name: number
           type: string
-          required: false
+          required: true
           in: path
           description: The customer number
       responses:
         200:
-          description: Returns all account of the reference
+          description: Returns all account of the number
           schema:
             $ref: "#/definitions/Account"
         404:
-          description: The given customer reference does not exists in database
+          description: The given customer number does not exists in database
           schema:
             $ref: "#/definitions/Error"
     put:
@@ -289,7 +283,7 @@ paths:
           schema:
             $ref: "#/definitions/Customer"
         400:
-          description: Missing data
+          description: Reference can not be updated
           schema:
             $ref: "#/definitions/Error"
         404:
@@ -329,10 +323,10 @@ definitions:
         type: string
         description: The customer's reference
     example:
+      reference: "JS_1234"
       firstname: "John"
       lastname: "Smith"
       city: "London"
-      reference: "JS_123456"
   Operation:
     type: object
     properties:
@@ -352,9 +346,9 @@ definitions:
         type: string
         description: The Operation's type
     example: 
-      reference: "R_111"
-      emetteur: "ACC_0123"
-      beneficiaire: "ACC_456"
+      reference: "R_100"
+      emetteur: "ACC_1"
+      beneficiaire: "ACC_2"
       montant: 150
       type: "versement"
   Account:
@@ -373,8 +367,8 @@ definitions:
         type: number
         description: Account's amount available
     example:
-      number: "ACC_0123"
-      reference: "JS_123456"
+      number: "ACC_1"
+      reference: "JS_1234"
       type: "Livret A"
       amount: 4500
   Error:

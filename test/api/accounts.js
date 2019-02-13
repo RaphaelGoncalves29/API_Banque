@@ -16,8 +16,8 @@ describe.only('Account api', function() {
 		await Promise.all(promises);
 	});
 
-	describe.only('GET /api/v1/accounts', function() {
-		it('Recover all accounts', async () => {
+	describe('GET /api/v1/accounts', function() {
+		it('Return all accounts', async () => {
 			const {body: accounts} = await server
 				.get('/api/v1/accounts')
 				.set('Accept', 'application/json')
@@ -26,7 +26,7 @@ describe.only('Account api', function() {
 			expect(accounts.length).to.equal(3);
 		});
 
-		it('Filtering accounts', async () => {
+		it('Filtering accounts with type', async () => {
 			const {body: accounts} = await server
 				.get('/api/v1/accounts')
 				.query({
@@ -41,7 +41,7 @@ describe.only('Account api', function() {
 			expect(accounts[1].reference).to.equal('JS_12');
 		});
 
-		it('Filtering accounts2', async () => {
+		it('Filtering accounts with type and reference', async () => {
 			const {body: accounts} = await server
 				.get('/api/v1/accounts')
 				.query({
@@ -55,10 +55,20 @@ describe.only('Account api', function() {
 			expect(accounts.length).to.equal(1);
 			expect(accounts[0].reference).to.equal('JS_1234562');
 		});
+
+		it("Type given doesn't exists, then error 404", async () => {
+			await server
+				.get('/api/v1/accounts')
+				.query({
+					type: 'Compte épargne',
+				})
+				.set('Accept', 'application/json')
+				.expect(404);
+		});
 	});
 
-	describe.only('POST /api/v1/accounts', function() {
-		it('should create an account', async () => {
+	describe('POST /api/v1/accounts', function() {
+		it('Should create an account', async () => {
 			const {body: account} = await server
 				.post('/api/v1/accounts')
 				.set('Accept', 'application/json')
@@ -74,7 +84,7 @@ describe.only('Account api', function() {
 			expect(account.reference).to.equal('MJ_1');
 		});
 
-		it('should return an 400 error if given body has not all the mandatory data', async () => {
+		it('Should return an 400 error if given body has not all the mandatory data', async () => {
 			await server
 				.post('/api/v1/accounts')
 				.set('Accept', 'application/json')
@@ -87,8 +97,9 @@ describe.only('Account api', function() {
 				.expect(400);
 		});
 
-		it("La requete envoie un utilisateur qui existe déjà, on reçoit un 409", async () => {
-			await server.post('/api/v1/accounts')
+		it('Should return an 409 error if the customer already exists', async () => {
+			await server
+				.post('/api/v1/accounts')
 				.send({
 					number: 'ACC_4',
 					reference: 'MJ_1',
@@ -100,13 +111,15 @@ describe.only('Account api', function() {
 		});
 
 	describe('GET /api/v1/accounts/:number', function() {
-		it("La reference donnée n'existe pas alors j'ai un 404", async () => {
-			await server.get('/api/v1/accounts/je-n-existe-pas')
+		it("Number given doesn't exists, then error 404", async () => {
+			await server
+				.get('/api/v1/accounts/je-n-existe-pas')
 				.expect(404);
 		});
 
-		it("La reference donnée existe donc j'ai un 200 avec un vol", async () => {
-			const {body: account} = await server.get('/api/v1/accounts/ACC_1')
+		it("Number given exists, return 200 ", async () => {
+			const {body: account} = await server
+				.get('/api/v1/accounts/ACC_1')
 				.expect(200);
 
 			expect(account.number).to.equal('ACC_1');
@@ -114,13 +127,14 @@ describe.only('Account api', function() {
 		});
 	});
 
-	describe('PUT /api/v1/accounts', function() {
-		it("Le nombre donné n'existe pas alors j'ai un 404", async () => {
-			await server.put('/api/v1/accounts/je-n-existe-pas')
+	describe('PUT /api/v1/accounts/:number', function() {
+		it("Number given doesn't exists, then error 404", async () => {
+			await server
+				.put('/api/v1/accounts/je-n-existe-pas')
 				.expect(404);
 		});
 
-		it('should update an account', async () => {
+		it('Should update an account', async () => {
 			const {body: account} = await server.put('/api/v1/accounts/ACC_1')
 				.set('Accept', 'application/json')
 				.send({
@@ -128,28 +142,27 @@ describe.only('Account api', function() {
 				})
 				.expect(200);
 
-			expect(account.number).to.equal('ACC_0123');
+			expect(account.number).to.equal('ACC_1');
 		});
-
-		it('shouldnt update an account', async () => {
+		it('Should return an 400 error if user try to update the reference', async () => {
 			await server.put('/api/v1/accounts/ACC_1')
 				.set('Accept', 'application/json')
 				.send({
-					amount: ''
+					reference: 'MS_125'
 				})
 				.expect(400);
-
-				expect(account.number).to.equal('ACC_1');
-			});
 		});
+	});
 
-	describe.only('DELETE /api/v1/accounts', function() {
-		it("Le nombre donné n'existe pas alors j'ai un 404", async () => {
-			await server.delete('/api/v1/accounts/je-n-existe-pas')
+	describe('DELETE /api/v1/accounts', function() {
+		it("Number given doesn't exists, then error 404", async () => {
+			await server
+				.delete('/api/v1/accounts/je-n-existe-pas')
 				.expect(404);
 		});
-		it('should delete an account', async () => {
-			await server.delete('/api/v1/accounts/ACC_1')
+		it('Should delete an account', async () => {
+			await server
+				.delete('/api/v1/accounts/ACC_1')
 				.set('Accept', 'application/json')
 				.expect(204);
 		});

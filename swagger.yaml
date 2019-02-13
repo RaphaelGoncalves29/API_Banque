@@ -38,8 +38,8 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Customer"
-        404:
-          description:  Not found
+        400:
+          description: Missing data
           schema:
             $ref: "#/definitions/Error"
     post:
@@ -58,10 +58,6 @@ paths:
             $ref: "#/definitions/Customer"
         400:
           description: Missing data
-          schema:
-            $ref: "#/definitions/Error"
-        409:
-          description: Customer already exists
           schema:
             $ref: "#/definitions/Error"
   /customers/{reference}:
@@ -136,14 +132,6 @@ paths:
           type: string
           in: query
           description: Type of operations
-        - name: emetteur
-          type: string
-          in: query
-          description: emetteur of operations
-        - name: beneficiaire
-          type: string
-          in: query
-          description: beneficiaire of operations  
       responses:
         200:
           description: List of filtered operations according to the restrictions given via querystring
@@ -151,8 +139,8 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Operation"
-        404:
-          description:  Not found
+        400:
+          description: Missing data
           schema:
             $ref: "#/definitions/Error"
     post:
@@ -173,28 +161,44 @@ paths:
           description: Missing data
           schema:
             $ref: "#/definitions/Error"
-        409:
-          description: Operation already exists
-          schema:
-            $ref: "#/definitions/Error"
-  /operations/{reference}:
+  /operations/{emetteur}:
     get:
       tags:
         - operations
       summary: Returns an unique operation
       parameters:
-        - name: reference
+        - name: emetteur
           type: string
           required: true
           in: path
-          description: The operation reference
+          description: The emetteur reference
       responses:
         200:
           description: Returns an unique operation
           schema:
             $ref: "#/definitions/Operation"
         404:
-          description: The operation reference does not exists in database
+          description: The emetteur reference does not exists in database
+          schema:
+            $ref: "#/definitions/Error"
+  /operations/{beneficaire}:
+    get:
+      tags:
+        - operations
+      summary: Returns an unique operation
+      parameters:
+        - name: beneficaire
+          type: string
+          required: true
+          in: path
+          description: The beneficaire reference
+      responses:
+        200:
+          description: Returns an unique operation
+          schema:
+            $ref: "#/definitions/Operation"
+        404:
+          description: The beneficaire reference does not exists in database
           schema:
             $ref: "#/definitions/Error"
   /accounts:
@@ -218,10 +222,6 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Account"
-        404:
-          description:  Not found
-          schema:
-            $ref: "#/definitions/Error"
     post:
       tags:
         - accounts
@@ -282,10 +282,10 @@ paths:
           description: Update a unique account
           schema:
             $ref: "#/definitions/Customer"
-        400:
-          description: Reference can not be updated
-          schema:
-            $ref: "#/definitions/Error"
+        # 400:
+        #   description: Missing data
+        #   schema:
+        #     $ref: "#/definitions/Error"
         404:
           description: The given number does not exists in database
           schema:

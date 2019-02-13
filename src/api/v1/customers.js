@@ -15,6 +15,7 @@ router.get('/:reference', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
+    console.log(req);
 	const {firstname, lastname, city} = req.query;
 	const filter = {
 		where: {}
@@ -26,11 +27,7 @@ router.get('/', async (req, res) => {
 	const {Customers} = req.db;
 	const customers = await Customers.findAll(filter);
 
-	if (customers.length > 0){
-		res.send(customers);
-	} else {
-		return res.status(404).send({ message: 'Customer not found' });
-	}
+	res.send(customers);
 });
 
 router.post('/', async (req, res) => {
@@ -59,10 +56,7 @@ router.put('/:reference', async (req, res) => {
     const body = req.body;
     const {Customers} = req.db;
     const customer = await Customers.findOne({ where: {reference: reference} });
-	if (body.reference) {
-        return res.status(400)
-            .send({message: `Reference can not be updated`});
-    }
+	
     if (customer) {
         customer.update(body);
         return res.send({

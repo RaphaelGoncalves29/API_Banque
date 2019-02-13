@@ -1,32 +1,20 @@
 [
-  {
-    "reference": "JD_1",
-    "firstname": "Johnny",
-    "lastname": "Doe",
-    "city": "London"
-  },
-  {
-    "reference": "JS_2",
-    "firstname": "Johnny",
-    "lastname": "Smith",
-    "city": "Montréal"
-  },
-  {
-    "reference": "RA_3",
-    "firstname": "Raf",
-    "lastname": "Azes",
-    "city": "Seoul"
-  },
-  {
-    "reference": "MP_4",
-    "firstname": "Morgo",
-    "lastname": "Pitou",
-    "city": "New-York"
-  },
-  {
-    "reference": "TK_5",
-    "firstname": "Ton",
-    "lastname": "Kutz",
-    "city": "Montréal"
-  }
-]
+    {
+      "firstname": "John",
+      "lastname": "Doe",
+      "city": "London",
+      "reference": "JD_123"
+    },
+    {
+      "firstname": "John",
+      "lastname": "Smith",
+      "city": "Paris",
+      "reference": "JS_456"
+    },
+    {
+      "firstname": "Toto",
+      "lastname": "Tata",
+      "city": "Coco",
+      "reference": "TT_123"
+    }
+  ]

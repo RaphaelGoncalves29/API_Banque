@@ -56,9 +56,9 @@ router.put('/:number', async (req, res) => {
     const body = req.body;
     const {Accounts} = req.db;
     const account = await Accounts.findOne({ where: {number: number} });
-    if (body.reference) {
+    if (body.number != account.number) {
         return res.status(400)
-            .send({message: `Reference can not be updated`});
+            .send({message: `Number can not be updated`});
     }
     if (account) {
         account.update(body);

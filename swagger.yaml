@@ -257,7 +257,7 @@ paths:
           description: The customer number
       responses:
         200:
-          description: Returns all account of the number
+          description: Returns a unique account
           schema:
             $ref: "#/definitions/Account"
         404:

@@ -272,7 +272,17 @@ paths:
         - name: body
           in: body
           schema:
-            $ref: "#/definitions/Account"
+            type: object
+            properties:
+              type:
+                type: string
+                description: Account's type
+              amount:
+                type: number
+                description: Account's amount available
+            example:
+              type: "Livret A"
+              amount: 4500
         - name: number
           type: string
           in: path
@@ -281,7 +291,7 @@ paths:
         200:
           description: Update a unique account
           schema:
-            $ref: "#/definitions/Customer"
+            $ref: "#/definitions/Account"
         400:
           description: Reference can not be updated
           schema:

@@ -8,7 +8,7 @@ const fixtures = require('../fixtures/accounts')
 
 const server = request(createServer());
 
-describe.only('Account api', function() {
+describe('Account api', function() {
 	before(async function() {
 		await database.sequelize.query('DELETE from ACCOUNTS');
 		const {Accounts} = database;
@@ -39,6 +39,20 @@ describe.only('Account api', function() {
 			expect(accounts.length).to.equal(2);
 			expect(accounts[0].reference).to.equal('JS_1234562');
 			expect(accounts[1].reference).to.equal('JS_12');
+		});
+
+		it('Filtering accounts with reference', async () => {
+			const {body: accounts} = await server
+				.get('/api/v1/accounts')
+				.query({
+					reference: 'JS_123',
+				})
+				.set('Accept', 'application/json')
+				.expect(200);
+
+			expect(accounts).to.be.an('array');
+			expect(accounts.length).to.equal(1);
+			expect(accounts[0].type).to.equal('Compte epargne');
 		});
 
 		it('Filtering accounts with type and reference', async () => {

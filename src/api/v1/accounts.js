@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
 	if (accounts.length > 0){
 		res.send(accounts);
 	} else {
-		return res.status(404).send({ message: `${reference} not found` });
+		return res.status(404).send({ message: `Il n'y a encore aucun compte enregistré` });
 	}
 });
 
@@ -58,7 +58,7 @@ router.put('/:number', async (req, res) => {
     const account = await Accounts.findOne({ where: {number: number} });
     if (body.reference) {
         return res.status(400)
-            .send({message: `Number can not be updated`});
+            .send({message: `Reference can not be updated`});
     }
     if (account) {
         account.update(body);

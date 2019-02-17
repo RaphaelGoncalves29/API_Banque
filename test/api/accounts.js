@@ -37,15 +37,15 @@ describe('Account api', function() {
 
 			expect(accounts).to.be.an('array');
 			expect(accounts.length).to.equal(2);
-			expect(accounts[0].reference).to.equal('JS_1234562');
-			expect(accounts[1].reference).to.equal('JS_12');
+			expect(accounts[0].reference).to.equal('JD_1');
+			expect(accounts[1].reference).to.equal('RA_3');
 		});
 
 		it('Filtering accounts with reference', async () => {
 			const {body: accounts} = await server
 				.get('/api/v1/accounts')
 				.query({
-					reference: 'JS_123',
+					reference: 'TK_5',
 				})
 				.set('Accept', 'application/json')
 				.expect(200);
@@ -60,20 +60,31 @@ describe('Account api', function() {
 				.get('/api/v1/accounts')
 				.query({
 					type: 'Livret AB',
-					reference: 'JS_1234562'
+					reference: 'JD_1'
 				})
 				.set('Accept', 'application/json')
 				.expect(200);
 
 			expect(accounts).to.be.an('array');
 			expect(accounts.length).to.equal(1);
-			expect(accounts[0].reference).to.equal('JS_1234562');
+			expect(accounts[0].reference).to.equal('JD_1');
 		});
 
 		it("Type given doesn't exists, then error 404", async () => {
 			await server
 				.get('/api/v1/accounts')
 				.query({
+					type: 'Compte épargne',
+				})
+				.set('Accept', 'application/json')
+				.expect(404);
+		});
+
+		it("Reference given exists but type given doesn't exists, then error 404", async () => {
+			await server
+				.get('/api/v1/accounts')
+				.query({
+					reference: 'JD_1',
 					type: 'Compte épargne',
 				})
 				.set('Accept', 'application/json')
@@ -137,7 +148,7 @@ describe('Account api', function() {
 				.expect(200);
 
 			expect(account.number).to.equal('ACC_1');
-			expect(account.reference).to.equal('JS_1234562');
+			expect(account.reference).to.equal('JD_1');
 		});
 	});
 
@@ -158,6 +169,20 @@ describe('Account api', function() {
 
 			expect(account.number).to.equal('ACC_1');
 		});
+
+		it('Should update an account', async () => {
+			const {body: account} = await server.put('/api/v1/accounts/ACC_2')
+				.set('Accept', 'application/json')
+				.send({
+					type: "Compte epargne",
+					amount: 1000
+				})
+				.expect(200);
+
+			expect(account.number).to.equal('ACC_2');
+			expect(account.body.amount).to.equal(1000);
+		});
+
 		it('Should return an 400 error if user try to update the reference', async () => {
 			await server.put('/api/v1/accounts/ACC_1')
 				.set('Accept', 'application/json')

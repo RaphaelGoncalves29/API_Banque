@@ -17,46 +17,46 @@ describe('Operation api', function() {
     });
     
     describe('GET /api/v1/operations', function() {
-		it('Return all operations', async () => {
-			const {body: operations} = await server
-				.get('/api/v1/operations')
-				.set('Accept', 'application/json')
-				.expect(200);
-			expect(operations).to.be.an('array');
-			expect(operations.length).to.equal(4);
-		});
+			it('Return all operations', async () => {
+				const {body: operations} = await server
+					.get('/api/v1/operations')
+					.set('Accept', 'application/json')
+					.expect(200);
+				expect(operations).to.be.an('array');
+				expect(operations.length).to.equal(4);
+			});
 
-		it("Type given doesn't exists, then error 404", async () => {
-			await server
-				.get('/api/v1/operations')
-				.query({
-					type: 'pret',
-				})
-				.set('Accept', 'application/json')
-				.expect(404);
-		});
+			it("Type given doesn't exists, then error 404", async () => {
+				await server
+					.get('/api/v1/operations')
+					.query({
+						type: 'pret',
+					})
+					.set('Accept', 'application/json')
+					.expect(404);
+			});
 
 
-		it('Filtering operations with type', async () => {
-			const {body: operations} = await server
-				.get('/api/v1/operations')
-				.query({
-					type: 'virement',
-				})
-				.set('Accept', 'application/json')
-				.expect(200);
+			it('Filtering operations with type', async () => {
+				const {body: operations} = await server
+					.get('/api/v1/operations')
+					.query({
+						type: 'virement',
+					})
+					.set('Accept', 'application/json')
+					.expect(200);
 
-			expect(operations).to.be.an('array');
-			expect(operations.length).to.equal(2);
-			expect(operations[0].reference).to.equal('OP_1');
-			expect(operations[1].reference).to.equal('OP_4');
-		});
+				expect(operations).to.be.an('array');
+				expect(operations.length).to.equal(2);
+				expect(operations[0].reference).to.equal('OP_1');
+				expect(operations[1].reference).to.equal('OP_4');
+			});
 
         it('Filtering operations with emetteur', async () => {
 			const {body: operations} = await server
 				.get('/api/v1/operations')
 				.query({
-					emetteur: 'RG_29',
+					emetteur: 'ACC_3',
 				})
 				.set('Accept', 'application/json')
 				.expect(200);
@@ -66,11 +66,27 @@ describe('Operation api', function() {
 			expect(operations[0].reference).to.equal('OP_3');
 		});
 
-        it('Filtering customers with beneficiaire', async () => {
+		it('Filtering customers with beneficiaire', async () => {
 			const {body: operations} = await server
 				.get('/api/v1/operations')
 				.query({
-					beneficiaire: 'JS_456',
+					beneficiaire: 'ACC_2',
+				})
+				.set('Accept', 'application/json')
+				.expect(200);
+
+			expect(operations).to.be.an('array');
+			expect(operations.length).to.equal(2);
+			expect(operations[0].reference).to.equal('OP_1');
+			expect(operations[1].reference).to.equal('OP_2');
+		});
+
+		it('Filtering customers with beneficiaire and emetteur', async () => {
+			const {body: operations} = await server
+				.get('/api/v1/operations')
+				.query({
+					beneficiaire: 'ACC_2',
+					emetteur: 'ACC_1'
 				})
 				.set('Accept', 'application/json')
 				.expect(200);
@@ -141,8 +157,8 @@ describe('Operation api', function() {
 				.get('/api/v1/operations/OP_1')
 				.expect(200);
 
-            expect(operation.emetteur).to.equal('JS_123');
-            expect(operation.beneficiaire).to.equal('JS_456');
+            expect(operation.emetteur).to.equal('ACC_1');
+            expect(operation.beneficiaire).to.equal('ACC_2');
             expect(operation.montant).to.equal(1500);
             expect(operation.type).to.equal('virement');
 			expect(operation.reference).to.equal('OP_1');

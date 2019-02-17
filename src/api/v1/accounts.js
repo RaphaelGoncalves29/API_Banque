@@ -63,7 +63,8 @@ router.put('/:number', async (req, res) => {
     if (account) {
         account.update(body);
         return res.send({
-            number: number
+            number: number,
+            body
         });
     } else {
         return res.status(404)

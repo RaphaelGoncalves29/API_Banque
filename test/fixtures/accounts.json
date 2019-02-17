@@ -1,19 +1,19 @@
 [
     {
       "number": "ACC_1",
-      "reference": "JS_1234562",
+      "reference": "JD_1",
       "type": "Livret AB",
       "amount": 1200
     },
     {
       "number": "ACC_2",
-      "reference": "JS_12",
+      "reference": "RA_3",
       "type": "Livret AB",
       "amount": 1200
     },
     {
       "number": "ACC_3",
-      "reference": "JS_123",
+      "reference": "TK_5",
       "type": "Compte epargne",
       "amount": 1200
     }

@@ -36,6 +36,36 @@ describe('Customer api', function() {
 				.expect(404);
 		});
 
+		it("Firstname given doesn't exists, then error 404", async () => {
+			await server
+				.get('/api/v1/customers')
+				.query({
+					firstname: 'Antoine',
+				})
+				.set('Accept', 'application/json')
+				.expect(404);
+		});
+
+		it("Lastname given doesn't exists, then error 404", async () => {
+			await server
+				.get('/api/v1/customers')
+				.query({
+					lastname: 'Azed',
+				})
+				.set('Accept', 'application/json')
+				.expect(404);
+		});
+		
+		it("Firstname given exists but lastname given doesn't exists, then error 404", async () => {
+			await server
+				.get('/api/v1/customers')
+				.query({
+					firstname: 'Johnny',
+					lastname: 'Azed',
+				})
+				.set('Accept', 'application/json')
+				.expect(404);
+		});
 
 		it('Filtering customers with firstname', async () => {
 			const {body: customers} = await server
@@ -87,6 +117,22 @@ describe('Customer api', function() {
 				.query({
 					firstname: 'Johnny',
 					lastname: 'Smith'
+				})
+				.set('Accept', 'application/json')
+				.expect(200);
+
+			expect(customers).to.be.an('array');
+			expect(customers.length).to.equal(1);
+			expect(customers[0].reference).to.equal('JS_2');
+		});
+
+		it('Filtering customers with firstname, lastname and city', async () => {
+			const {body: customers} = await server
+				.get('/api/v1/customers')
+				.query({
+					firstname: 'Johnny',
+					lastname: 'Smith',
+					city: 'Montréal'
 				})
 				.set('Accept', 'application/json')
 				.expect(200);
@@ -175,10 +221,33 @@ describe('Customer api', function() {
 			expect(customer.reference).to.equal('SC_123');
 		});
 
+		it('Should update a customer', async () => {
+			const {body: customer} = await server.put('/api/v1/customers/SC_123')
+				.set('Accept', 'application/json')
+				.send({
+					lastname: 'Koptain', 
+					city: 'Shanghai'
+				})
+				.expect(200);
+
+			expect(customer.reference).to.equal('SC_123');
+			expect(customer.body.city).to.equal('Shanghai');
+		});
+
 		it('Should return an 400 error if user try to update the reference', async () => {
 			await server.put('/api/v1/customers/SC_123')
 				.set('Accept', 'application/json')
 				.send({
+					reference: 'MS_125'
+				})
+				.expect(400);
+		});
+
+		it('Should return an 400 error if user try to update the reference', async () => {
+			await server.put('/api/v1/customers/SC_123')
+				.set('Accept', 'application/json')
+				.send({
+					city: 'France',
 					reference: 'MS_125'
 				})
 				.expect(400);
@@ -191,6 +260,7 @@ describe('Customer api', function() {
 				.delete('/api/v1/customers/je-n-existe-pas')
 				.expect(404);
 		});
+
 		it('Should delete an customer', async () => {
 			await server
 				.delete('/api/v1/customers/SC_123')

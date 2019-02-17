@@ -92,7 +92,21 @@ paths:
         - name: body
           in: body
           schema:
-            $ref: "#/definitions/Customer"
+            type: object
+            properties:
+              firstname:
+                type: string
+                description: The customer's firstname
+              lastname:
+                type: string
+                description: The customer's lastname
+              city:
+                type: string
+                description: The customer's city
+            example:
+              firstname: "John"
+              lastname: "Smith"
+              city: "London"  
         - name: reference
           type: string
           in: path

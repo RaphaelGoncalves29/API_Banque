@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
 	if (customers.length > 0){
 		res.send(customers);
 	} else {
-		return res.status(404).send({ message: 'Customer not found' });
+		return res.status(404).send({ message: 'Il n y a encore aucun client enregistré' });
 	}
 });
 
@@ -66,7 +66,8 @@ router.put('/:reference', async (req, res) => {
     if (customer) {
         customer.update(body);
         return res.send({
-            reference: reference
+			reference: reference,
+			body
         });
     } else {
         return res.status(404)

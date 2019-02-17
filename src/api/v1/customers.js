@@ -59,7 +59,7 @@ router.put('/:reference', async (req, res) => {
     const body = req.body;
     const {Customers} = req.db;
     const customer = await Customers.findOne({ where: {reference: reference} });
-	if (body.reference != customer.reference) {
+	if (body.reference) {
         return res.status(400)
             .send({message: `Reference can not be updated`});
     }
